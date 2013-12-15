@@ -14,6 +14,13 @@ import java.io.Serializable;
  * To change this template use File | Settings | File Templates.
  */
 public class Diode extends TwoPortElement implements Serializable{
+
+    /**
+     * Indicate the amount of diode create up to now.
+     * Used to created matching diode model names.
+     */
+    private static int diodeNum = 0;
+
     private transient Property[] properties;
 
     private float is = 1;
@@ -95,11 +102,20 @@ public class Diode extends TwoPortElement implements Serializable{
         return "D%d";
     }
 
+    /**
+     * The method is still imcomplete, but the idea is to create a matching model line
+     * to each of the diode declared.
+     *
+     * @param nodes
+     * @param crawler
+     * @return
+     */
     @Override
     public String toNetlistString(String[] nodes, NodeCrawler crawler)
     {
-        return ".MODEL D1N44 D (IS="+ is + ScalarProperty.translateUnit(isUnit) +
+        diodeNum++;
+        return ".MODEL " + diodeNum + " D (IS="+ is + ScalarProperty.translateUnit(isUnit) +
                 " vt=" + vt + ScalarProperty.translateUnit(vtUnit)  +")\n" + super.toNetlistString(nodes, crawler)
-                + "D1N44";
+                + diodeNum;
     }
 }
