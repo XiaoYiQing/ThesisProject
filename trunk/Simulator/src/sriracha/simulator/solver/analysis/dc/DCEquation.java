@@ -6,25 +6,27 @@ import sriracha.math.interfaces.IRealVector;
 import sriracha.simulator.Options;
 import sriracha.simulator.model.Circuit;
 import sriracha.simulator.model.CircuitElement;
+import sriracha.simulator.solver.analysis.Equation;
 
-public class DCEquation
+public class DCEquation extends Equation
 {
-    protected IRealMatrix G;
 
     protected IRealVector b;
 
     protected int circuitNodeCount;
 
-    public DCEquation(int nodeCount)
+    protected DCEquation(int nodeCount, boolean isLinear)
     {
+        super(isLinear);
         G = MathActivator.Activator.realMatrix(nodeCount, nodeCount);
         b = MathActivator.Activator.realVector(nodeCount);
         circuitNodeCount = nodeCount;
     }
 
-    protected DCEquation(IRealMatrix c, IRealVector b)
+    protected DCEquation(IRealMatrix g, IRealVector b, boolean isLinear)
     {
-        this.G = c;
+        super(isLinear);
+        this.G = g;
         this.b = b;
         circuitNodeCount = b.getDimension();
     }
@@ -32,7 +34,7 @@ public class DCEquation
     /**
      * This method acts as the official constructor of DCEquation objects.
      * The method apply the stamps of the circuit elements to the matrix equations.
-     * The "applyDC" method of circuit elements will call the "applyMatrixStamp" or
+     * The "applyDC" method of circuit elements will call the "applyRealMatrixStamp" or
      * "applySourceVectorStamp" method of DCEquation class through the elements of
      * the circuit.
      *
@@ -41,10 +43,11 @@ public class DCEquation
      *                extra variables present.
      * @return
      */
-    public static DCEquation generate(Circuit circuit)
+    public static DCEquation generate(Circuit circuit, boolean isLinear)
     {
-        DCEquation equation = new DCEquation(circuit.getMatrixSize());
+        DCEquation equation = new DCEquation(circuit.getMatrixSize(), isLinear);
 
+        System.out.println("In DCEquation => generate");
         for (CircuitElement element : circuit.getElements())
         {
             element.applyDC(equation);
@@ -73,7 +76,7 @@ public class DCEquation
      * @param j y matrix coordinate
      * @param value
      */
-    public void applyMatrixStamp(int i, int j, double value)
+    public void applyRealMatrixStamp(int i, int j, double value)
     {
 
         //no stamps to ground
@@ -95,10 +98,12 @@ public class DCEquation
 
     public DCEquation clone()
     {
-        return new DCEquation(G.clone(), b.clone());
+        return new DCEquation(G.clone(), b.clone(), this.isLinear);
     }
 
 
-
+    public IRealMatrix getG(){
+        return G;
+    }
 
 }

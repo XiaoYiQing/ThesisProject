@@ -41,12 +41,13 @@ public class CCVS extends CCSource
     @Override
     public void applyDC(DCEquation equation)
     {
-        equation.applyMatrixStamp(currentOutIndex, nPlus, 1);
-        equation.applyMatrixStamp(currentOutIndex, nMinus, -1);
-        equation.applyMatrixStamp(currentOutIndex, dummySource.getCurrentVarIndex(), -gm);
 
-        equation.applyMatrixStamp(nPlus, currentOutIndex, 1);
-        equation.applyMatrixStamp(nMinus, currentOutIndex, -1);
+        equation.applyRealMatrixStamp(currentOutIndex, nPlus, 1);
+        equation.applyRealMatrixStamp(currentOutIndex, nMinus, -1);
+        equation.applyRealMatrixStamp(currentOutIndex, dummySource.getCurrentVarIndex(), -gm);
+
+        equation.applyRealMatrixStamp(nPlus, currentOutIndex, 1);
+        equation.applyRealMatrixStamp(nMinus, currentOutIndex, -1);
 
     }
 
@@ -54,12 +55,13 @@ public class CCVS extends CCSource
     @Override
     public void applyTrans(TransEquation equation)
     {
-        equation.applyTransRealMatrixStamp(currentOutIndex, nPlus, 1);
-        equation.applyTransRealMatrixStamp(currentOutIndex, nMinus, -1);
-        equation.applyTransRealMatrixStamp(currentOutIndex, dummySource.getCurrentVarIndex(), -gm);
 
-        equation.applyTransRealMatrixStamp(nPlus, currentOutIndex, 1);
-        equation.applyTransRealMatrixStamp(nMinus, currentOutIndex, -1);
+        equation.applyRealMatrixStamp(currentOutIndex, nPlus, 1);
+        equation.applyRealMatrixStamp(currentOutIndex, nMinus, -1);
+        equation.applyRealMatrixStamp(currentOutIndex, dummySource.getCurrentVarIndex(), -gm);
+
+        equation.applyRealMatrixStamp(nPlus, currentOutIndex, 1);
+        equation.applyRealMatrixStamp(nMinus, currentOutIndex, -1);
 
     }
 

@@ -45,10 +45,11 @@ public class Inductor extends CircuitElement
     @Override
     public void applyDC(DCEquation equation)
     {
-        equation.applyMatrixStamp(currentIndex, nPlus, 1);
-        equation.applyMatrixStamp(currentIndex, nMinus, -1);
-        equation.applyMatrixStamp(nPlus, currentIndex, 1);
-        equation.applyMatrixStamp(nMinus, currentIndex, -1);
+
+        equation.applyRealMatrixStamp(currentIndex, nPlus, 1);
+        equation.applyRealMatrixStamp(currentIndex, nMinus, -1);
+        equation.applyRealMatrixStamp(nPlus, currentIndex, 1);
+        equation.applyRealMatrixStamp(nMinus, currentIndex, -1);
     }
 
     @Override
@@ -66,20 +67,13 @@ public class Inductor extends CircuitElement
     @Override
     public void applyTrans(TransEquation equation)
     {
-        equation.applyTransRealMatrixStamp(currentIndex, nPlus, 1);
-        equation.applyTransRealMatrixStamp(currentIndex, nMinus, -1);
-        equation.applyTransRealMatrixStamp(nPlus, currentIndex, 1);
-        equation.applyTransRealMatrixStamp(nMinus, currentIndex, -1);
 
-        equation.applyTransConductorInductor(currentIndex, currentIndex, -inductance);
+        equation.applyRealMatrixStamp(currentIndex, nPlus, 1);
+        equation.applyRealMatrixStamp(currentIndex, nMinus, -1);
+        equation.applyRealMatrixStamp(nPlus, currentIndex, 1);
+        equation.applyRealMatrixStamp(nMinus, currentIndex, -1);
 
-        //equation.applyTransConductorInductor(currentIndex, nPlus, 1);
-        //equation.applyTransConductorInductor(currentIndex, nMinus, -1);
-        //equation.applyTransConductorInductor(nPlus, currentIndex, 1);
-       // equation.applyTransConductorInductor(nMinus, currentIndex, -1);
-
-        //equation.applyTransConductorInductor(currentIndex, currentIndex, -inductance);
-
+        equation.applyComplexMatrixStamp(currentIndex, currentIndex, -inductance);
     }
 
 

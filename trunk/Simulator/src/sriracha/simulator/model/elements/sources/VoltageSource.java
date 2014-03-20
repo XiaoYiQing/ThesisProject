@@ -3,6 +3,8 @@ package sriracha.simulator.model.elements.sources;
 import sriracha.math.MathActivator;
 import sriracha.math.interfaces.IComplex;
 import sriracha.simulator.model.CircuitElement;
+
+import sriracha.simulator.model.elements.sources.transient_functions.TransientFunction;
 import sriracha.simulator.solver.analysis.ac.ACEquation;
 import sriracha.simulator.solver.analysis.dc.DCEquation;
 import sriracha.simulator.solver.analysis.trans.TransEquation;
@@ -13,17 +15,21 @@ public class VoltageSource extends Source
 
     public VoltageSource(String name, double dcValue)
     {
-        super(name, dcValue, MathActivator.Activator.complex(0, 0));
+        super(name, dcValue, MathActivator.Activator.complex(0, 0), null);
     }
 
     public VoltageSource(String name, IComplex acPhasorValue)
     {
-        super(name, 0, acPhasorValue);
+        super(name, 0, acPhasorValue, null);
     }
 
     public VoltageSource(String name, double dcValue, IComplex acPhasorValue)
     {
-        super(name, dcValue, acPhasorValue);
+        super(name, dcValue, acPhasorValue, null);
+    }
+
+    public VoltageSource(String name, double dcValue, IComplex acPhasorValue, TransientFunction transfct){
+        super(name, dcValue, acPhasorValue, transfct);
     }
 
     private int currentIndex;
@@ -37,10 +43,10 @@ public class VoltageSource extends Source
     @Override
     public void applyDC(DCEquation equation)
     {
-        equation.applyMatrixStamp(currentIndex, nPlus, 1);
-        equation.applyMatrixStamp(currentIndex, nMinus, -1);
-        equation.applyMatrixStamp(nPlus, currentIndex, 1);
-        equation.applyMatrixStamp(nMinus, currentIndex, -1);
+        equation.applyRealMatrixStamp(currentIndex, nPlus, 1);
+        equation.applyRealMatrixStamp(currentIndex, nMinus, -1);
+        equation.applyRealMatrixStamp(nPlus, currentIndex, 1);
+        equation.applyRealMatrixStamp(nMinus, currentIndex, -1);
 
         equation.applySourceVectorStamp(currentIndex, dcValue);
     }
@@ -60,13 +66,25 @@ public class VoltageSource extends Source
     @Override
     public void applyTrans(TransEquation equation)
     {
-        equation.applyTransRealMatrixStamp(currentIndex, nPlus, 1);
-        equation.applyTransRealMatrixStamp(currentIndex, nMinus, -1);
-        equation.applyTransRealMatrixStamp(nPlus, currentIndex, 1);
-        equation.applyTransRealMatrixStamp(nMinus, currentIndex, -1);
+        equation.applyRealMatrixStamp(currentIndex, nPlus, 1);
+        equation.applyRealMatrixStamp(currentIndex, nMinus, -1);
+        equation.applyRealMatrixStamp(nPlus, currentIndex, 1);
+        equation.applyRealMatrixStamp(nMinus, currentIndex, -1);
 
-        //equation.applySourceVectorStamp(currentIndex, transValue);
-        equation.applySourceVectorStamp(currentIndex, acPhasorValue);
+        equation.applySourceVectorStamp(this);
+    }
+
+
+    public void updateSourceVector(TransEquation transEq, double time){
+        double newVal = this.getTransientValue(time);
+        transEq.updateSourceVector(currentIndex, newVal);
+    }
+
+    public double getTransientValue(double time){
+        if(transfun == null){
+            return 0;
+        }
+        return this.transfun.probeValue(time);
     }
 
     @Override

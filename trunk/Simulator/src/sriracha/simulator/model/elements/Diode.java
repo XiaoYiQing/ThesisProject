@@ -8,6 +8,7 @@ import sriracha.simulator.solver.analysis.ac.ACEquation;
 import sriracha.simulator.solver.analysis.dc.DCEquation;
 import sriracha.simulator.solver.analysis.dc.DCNonLinEquation;
 import sriracha.simulator.solver.analysis.trans.TransEquation;
+import sriracha.simulator.solver.analysis.trans.TransNonLinEquation;
 
 /**
  * Diode circuit element using the equation: I = Is*(exp(V/Vt)-1)
@@ -22,7 +23,6 @@ public class Diode extends NonLinCircuitElement {
      * Standard saturation current: 1e-14A
      */
     public static final double STD_IS = 0.00000000000001;
-
     /**
      * Diode's anode
      */
@@ -64,7 +64,7 @@ public class Diode extends NonLinCircuitElement {
     public void getNonLinContribution(IComplexVector f, IComplexVector x){
 
         //Note: A node value of -1 is ground by default.
-        //If a node is -1, then its voltage is 0 and has contribution
+        //If a node is -1, then its voltage is 0 and has no contribution
 
         double value = 0;
         if(nodeA == -1){
@@ -85,7 +85,7 @@ public class Diode extends NonLinCircuitElement {
     public void getNonLinContribution(IRealVector f, IRealVector x){
 
         //Note: A node value of -1 is ground by default.
-        //If a node is -1, then its voltage is 0 and has contribution
+        //If a node is -1, then its voltage is 0 and has no contribution
 
         double value = 0;
         if(nodeA == -1){
@@ -146,8 +146,8 @@ public class Diode extends NonLinCircuitElement {
 
     @Override
     public void setNodeIndices(int... indices){
-        nodeB = indices[0];
-        nodeA = indices[1];
+        nodeA = indices[0];
+        nodeB = indices[1];
     }
 
     @Override
@@ -172,7 +172,7 @@ public class Diode extends NonLinCircuitElement {
 
     @Override
     public void applyDC(DCEquation equation) {
-        if(equation instanceof DCNonLinEquation)
+        if(!equation.isLinear())
             applyDC((DCNonLinEquation)equation);
     }
 
@@ -184,6 +184,19 @@ public class Diode extends NonLinCircuitElement {
     @Override
     public void applyAC(ACEquation equation) {
         //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void applyTrans(TransEquation equation)
+    {
+        if(!equation.isLinear())
+            applyTrans((TransNonLinEquation) equation);
+    }
+
+    @Override
+    public void applyTrans(TransNonLinEquation equation)
+    {
+        equation.applyNonLinearCircuitElem(this);
     }
 
     @Override
@@ -201,6 +214,5 @@ public class Diode extends NonLinCircuitElement {
         return is;
     }
 
-    @Override
-    public void applyTrans(TransEquation equation) {}
+
 }

@@ -59,4 +59,5 @@ public abstract class CCSource extends ControlledSource
     {
         return dummySource;
     }
+
 }

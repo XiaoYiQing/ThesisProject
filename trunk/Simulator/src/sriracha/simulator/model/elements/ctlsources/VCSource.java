@@ -34,6 +34,7 @@ public abstract class VCSource extends ControlledSource
     @Override
     public void setNodeIndices(int... indices)
     {
+
         super.setNodeIndices(indices);
         ncPlus = indices[2];
         ncMinus = indices[3];
@@ -46,8 +47,11 @@ public abstract class VCSource extends ControlledSource
     @Override
     public int[] getNodeIndices()
     {
-        return new int[]{nPlus, ncMinus, ncPlus, ncMinus};
+        return new int[]{nPlus, nMinus, ncPlus, ncMinus};
     }
 
+    public String toString(){
+        return name + " " + nPlus + " " + nMinus + " " + ncPlus + " " + ncMinus + " " + gm;
+    }
 
 }

@@ -8,6 +8,7 @@ import sriracha.math.interfaces.IRealVector;
 import sriracha.simulator.solver.analysis.ac.ACEquation;
 import sriracha.simulator.solver.analysis.dc.DCEquation;
 import sriracha.simulator.solver.analysis.dc.DCNonLinEquation;
+import sriracha.simulator.solver.analysis.trans.TransNonLinEquation;
 
 /**
  * Created with IntelliJ IDEA.
@@ -35,6 +36,8 @@ public abstract class NonLinCircuitElement extends CircuitElement{
      * @param equation DCEquation object to be stamped
      */
     public abstract void applyDC(DCNonLinEquation equation);
+
+    public abstract void applyTrans(TransNonLinEquation equation);
 
     /**
      * Method adds the contribution of this instance of non-linear circuit element

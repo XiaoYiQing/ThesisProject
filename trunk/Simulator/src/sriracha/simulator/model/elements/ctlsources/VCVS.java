@@ -41,24 +41,29 @@ public class VCVS extends VCSource
     @Override
     public void applyDC(DCEquation equation)
     {
-        equation.applyMatrixStamp(currentIndex, ncPlus, gm);
-        equation.applyMatrixStamp(currentIndex, ncMinus, -gm);
-        equation.applyMatrixStamp(nPlus, currentIndex, -1);
-        equation.applyMatrixStamp(nMinus, currentIndex, 1);
-        equation.applyMatrixStamp(currentIndex, nPlus, -1);
-        equation.applyMatrixStamp(currentIndex, nMinus, 1);
+
+        System.out.println("In VCVS => applyDC(DCEquation equation)");
+        System.out.println("currentIndex: " + currentIndex);
+
+        equation.applyRealMatrixStamp(currentIndex, ncPlus, gm);
+        equation.applyRealMatrixStamp(currentIndex, ncMinus, -gm);
+        equation.applyRealMatrixStamp(nPlus, currentIndex, -1);
+        equation.applyRealMatrixStamp(nMinus, currentIndex, 1);
+        equation.applyRealMatrixStamp(currentIndex, nPlus, -1);
+        equation.applyRealMatrixStamp(currentIndex, nMinus, 1);
     }
 
     /* TODO */
     @Override
     public void applyTrans(TransEquation equation)
     {
-        equation.applyTransRealMatrixStamp(currentIndex, ncPlus, gm);
-        equation.applyTransRealMatrixStamp(currentIndex, ncMinus, -gm);
-        equation.applyTransRealMatrixStamp(nPlus, currentIndex, -1);
-        equation.applyTransRealMatrixStamp(nMinus, currentIndex, 1);
-        equation.applyTransRealMatrixStamp(currentIndex, nPlus, -1);
-        equation.applyTransRealMatrixStamp(currentIndex, nMinus, 1);
+
+        equation.applyRealMatrixStamp(currentIndex, ncPlus, gm);
+        equation.applyRealMatrixStamp(currentIndex, ncMinus, -gm);
+        equation.applyRealMatrixStamp(nPlus, currentIndex, -1);
+        equation.applyRealMatrixStamp(nMinus, currentIndex, 1);
+        equation.applyRealMatrixStamp(currentIndex, nPlus, -1);
+        equation.applyRealMatrixStamp(currentIndex, nMinus, 1);
     }
 
     @Override

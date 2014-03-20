@@ -3,6 +3,8 @@ package sriracha.simulator.model.elements.sources;
 import sriracha.math.MathActivator;
 import sriracha.math.interfaces.IComplex;
 import sriracha.simulator.model.CircuitElement;
+
+import sriracha.simulator.model.elements.sources.transient_functions.TransientFunction;
 import sriracha.simulator.solver.analysis.ac.ACEquation;
 import sriracha.simulator.solver.analysis.dc.DCEquation;
 import sriracha.simulator.solver.analysis.trans.TransEquation;
@@ -13,17 +15,22 @@ public class CurrentSource extends Source
 
     public CurrentSource(String name, IComplex acPhasorValue)
     {
-        super(name, 0, acPhasorValue);
+
+        super(name, 0, acPhasorValue, null);
     }
 
     public CurrentSource(String name, double dcValue)
     {
-        super(name, dcValue, MathActivator.Activator.complex(0, 0));
+        super(name, dcValue, MathActivator.Activator.complex(0, 0), null);
     }
 
-    private CurrentSource(String name, double dcValue, IComplex acPhasorValue)
+    public CurrentSource(String name, double dcValue, IComplex acPhasorValue)
     {
-        super(name, dcValue, acPhasorValue);
+        super(name, dcValue, acPhasorValue, null);
+    }
+
+    public CurrentSource(String name, double dcValue, IComplex acPhasorValue, TransientFunction transfct){
+        super(name, dcValue, acPhasorValue, transfct);
     }
 
     /**
@@ -60,11 +67,20 @@ public class CurrentSource extends Source
     @Override
     public void applyTrans(TransEquation equation)
     {
-        /*equation.applySourceVectorStamp(nMinus, transValue);
-        equation.applySourceVectorStamp(nPlus, -transValue); */
+        equation.applySourceVectorStamp(this);
+    }
 
-        equation.applySourceVectorStamp(nMinus, acPhasorValue);
-        equation.applySourceVectorStamp(nPlus, acPhasorValue.opposite());
+    public void updateSourceVector(TransEquation transEq, double time){
+        double newVal = this.getTransientValue(time);
+        transEq.updateSourceVector(nMinus, newVal);
+        transEq.updateSourceVector(nPlus, -1 * newVal);
+    }
+
+    public double getTransientValue(double time){
+        if(transfun == null){
+            return 0;
+        }
+        return this.transfun.probeValue(time);
     }
 
     @Override
