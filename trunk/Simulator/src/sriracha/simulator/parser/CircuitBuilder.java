@@ -56,8 +56,6 @@ public class CircuitBuilder
 
     public CircuitBuilder(String netlist)
     {
-        System.out.println("In CircuitBuilder => CircuitBuilder(String netlist)");
-
         ArrayList<String>initialList = new ArrayList<String>();
         String[] lines = netlist.split("\\r?\\n");
 

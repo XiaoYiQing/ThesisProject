@@ -67,9 +67,6 @@ public class TransNonLinEquation extends TransEquation {
    *  returns x(n+1) , i.e. nextVoltage
    * */
     IRealVector solve(double timeStep, IRealVector currentVoltage, double nextTime) {
-
-        System.out.println("Solving");
-
         //Update the b vector for the "nextTime" specified.
         getNewBVector(nextTime);
         //(P = G + C/h)

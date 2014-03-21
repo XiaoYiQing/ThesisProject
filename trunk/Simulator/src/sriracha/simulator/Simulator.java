@@ -76,7 +76,6 @@ public class Simulator implements ISimulator
      */
     private boolean setCircuit(Circuit circuit)
     {
-        System.out.println("In Simulator => setCircuit(Circuit circuit)");
         this.circuit = circuit;
         circuit.assignAdditionalVarIndices();
         if (Options.isPrintCircuit())
@@ -97,7 +96,6 @@ public class Simulator implements ISimulator
     @Override
     public boolean setNetlist(String netlist)
     {
-        System.out.println("In Simulator => setNetList(String netlist) before builder");
         clearData();
 
 
@@ -107,13 +105,11 @@ public class Simulator implements ISimulator
 
         requestedAnalysis.addAll(builder.getAnalysisTypes());
 
-        System.out.println("In Simulator => setNetList(String netlist) before request analysis");
         for (Analysis a : requestedAnalysis)
         {
             a.extractSolvingInfo(circuit);
         }
 
-        System.out.println("In Simulator => setNetList(String netlist) before filters");
         outputFilters.addAll(builder.getOutputFilters());
 
         return saveAll();
