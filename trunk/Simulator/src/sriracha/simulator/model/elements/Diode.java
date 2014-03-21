@@ -146,8 +146,8 @@ public class Diode extends NonLinCircuitElement {
 
     @Override
     public void setNodeIndices(int... indices){
-        nodeA = indices[0];
-        nodeB = indices[1];
+        nodeA = indices[1];
+        nodeB = indices[0];
     }
 
     @Override
