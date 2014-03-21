@@ -45,7 +45,7 @@ public abstract class Equation {
         //The scale factor for the b vector.
         double alpha = 0;
         //Amount of steps toward the final alpha = 1
-        int steps = 100;
+        int steps = 10;
         //integer indicating whether the continuation method attempt was successful.
         //  (0 = success, -1 = failure)
         int success = -1;
