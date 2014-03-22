@@ -120,6 +120,7 @@ public abstract class Equation {
         //The Jacobian matrix
         IRealMatrix J = activator.realMatrix(n,n);
 
+        //Computation loop.
         do{
 
             f0.clear();
