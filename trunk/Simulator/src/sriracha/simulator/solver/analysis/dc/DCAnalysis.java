@@ -1,5 +1,7 @@
 package sriracha.simulator.solver.analysis.dc;
 
+import sriracha.math.MathActivator;
+import sriracha.math.interfaces.IRealVector;
 import sriracha.simulator.Options;
 import sriracha.simulator.Simulator;
 import sriracha.simulator.model.Circuit;
@@ -10,6 +12,8 @@ import sriracha.simulator.solver.analysis.IAnalysisResults;
 
 public class DCAnalysis extends Analysis
 {
+    private MathActivator activator = MathActivator.Activator;
+
     private DCEquation equation;
     private DCEquation sweepEquation;
     private DCEquation originalEquation;
@@ -55,6 +59,12 @@ public class DCAnalysis extends Analysis
     {
         DCResults results = new DCResults();
 
+        boolean firstIteration = true;
+        IRealVector voltageVector = activator.realVector(originalEquation.getG().getNumberOfColumns());
+        //the current voltage vector is initialized at 0.  It is currently specified
+        //that the initial conditions are to be set to zero init. conditions.
+        voltageVector.clear();
+
         if (sweep2 != null)
         {
             //long mode
@@ -75,8 +85,10 @@ public class DCAnalysis extends Analysis
 
                     sweep.getSource().modifyStamp(i, equation);
                     if (Options.isPrintProgress()) System.out.println("DC solving point");
-                    results.addVector(i, equation.solve());
 
+                    voltageVector = equation.solve(voltageVector, firstIteration);
+                    results.addVector(i, voltageVector);
+                    firstIteration = false;
                 }
             }
 
@@ -91,8 +103,10 @@ public class DCAnalysis extends Analysis
                 equation = originalEquation.clone();//this system could be optimized at some point
                 sweep.getSource().modifyStamp(i, equation);
                 if (Options.isPrintProgress()) System.out.println("DC solving point");
-                results.addVector(i, equation.solve());
 
+                voltageVector = equation.solve(voltageVector, firstIteration);
+                results.addVector(i, voltageVector);
+                firstIteration = false;
             }
         }
 

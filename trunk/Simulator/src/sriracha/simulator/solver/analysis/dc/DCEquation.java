@@ -57,7 +57,7 @@ public class DCEquation extends Equation
 
     }
 
-    public IRealVector solve()
+    public IRealVector solve(IRealVector prevVector, boolean firstIteration)
     {
 
         if (Options.isPrintMatrix())

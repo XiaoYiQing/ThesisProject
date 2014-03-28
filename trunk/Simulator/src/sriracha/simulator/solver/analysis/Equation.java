@@ -18,7 +18,7 @@ public abstract class Equation {
     private MathActivator activator = MathActivator.Activator;
 
     public static final double STD_H = 1e-9;
-    public static final double STD_THRESHOLD = 9e-15;
+    public static final double STD_THRESHOLD = 9e-14;
     public static final int STD_DIVERGENCE_TOLERANCE = 5;
     public static final int STD_CONT_METHOD_ATTEMPTS = 3;
 
