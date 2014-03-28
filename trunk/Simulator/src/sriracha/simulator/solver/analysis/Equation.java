@@ -38,14 +38,17 @@ public abstract class Equation {
 
     //The following is a temporary method to build up Newton Iteration solver.
     public IRealVector myNewtonRapComp(IRealMatrix G, IRealVector b,
-                                       ArrayList<NonLinCircuitElement> nonLinearElem){
+                                       ArrayList<NonLinCircuitElement> nonLinearElem, IRealVector guess, boolean firstIteration){
 
         int size = b.getDimension();
 
         //The scale factor for the b vector.
         double alpha = 0;
         //Amount of steps toward the final alpha = 1
-        int steps = 10;
+        int steps = 1;
+        if(firstIteration){
+            steps = 10;
+        }
         //integer indicating whether the continuation method attempt was successful.
         //  (0 = success, -1 = failure)
         int success = -1;
@@ -53,7 +56,7 @@ public abstract class Equation {
         int failedAttempts = 0;
 
         //The node voltage vector (guess)
-        IRealVector x0 = activator.realVector(size);
+        IRealVector x0 = guess.clone();
         //The final computed node voltage vector
         IRealVector answer = activator.realVector(size);
 
@@ -68,7 +71,7 @@ public abstract class Equation {
                 //steps to aim for a better change of convergence.  Restart continuation method.
                 if(success == -1){
                     alpha = 0;
-                    steps *= 10;
+                    steps *= 5;
                     x0.clear();
                     failedAttempts++;
                     break;

@@ -70,7 +70,7 @@ public class TransEquation extends Equation
     /* Solve: P*x(n+1) = Q for the given the current nodal voltages and the
     *  returns x(n+1) , i.e. nextVoltage
     * */
-    IRealVector solve(double timeStep, IRealVector currentVoltage, double nextTime) {
+    IRealVector solve(double timeStep, IRealVector currentVoltage, double nextTime, boolean firstIteration) {
 
         //Update the b vector for the "nextTime" specified.
         getNewBVector(nextTime);

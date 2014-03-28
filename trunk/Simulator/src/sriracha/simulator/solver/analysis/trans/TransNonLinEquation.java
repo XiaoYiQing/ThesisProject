@@ -66,7 +66,7 @@ public class TransNonLinEquation extends TransEquation {
     /* Solve: P*x(n+1) = Q for the given the current nodal voltages and the
    *  returns x(n+1) , i.e. nextVoltage
    * */
-    IRealVector solve(double timeStep, IRealVector currentVoltage, double nextTime) {
+    IRealVector solve(double timeStep, IRealVector currentVoltage, double nextTime, boolean firstIteration) {
         //Update the b vector for the "nextTime" specified.
         getNewBVector(nextTime);
         //(P = G + C/h)
@@ -81,7 +81,7 @@ public class TransNonLinEquation extends TransEquation {
         }
         //P*x(n+1) = Q, solve for x(n+1)
         //return P.solve(Q);
-        return myNewtonRapComp(P, Q, nonLinearElem);
+        return myNewtonRapComp(P, Q, nonLinearElem, currentVoltage, firstIteration);
     }
 
     public ArrayList<NonLinCircuitElement> getNonLinearElem() {

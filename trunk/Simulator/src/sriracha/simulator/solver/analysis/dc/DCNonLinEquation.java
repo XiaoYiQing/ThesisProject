@@ -94,7 +94,7 @@ public class DCNonLinEquation extends DCEquation{
             System.out.println(b);
         }
 
-        return myNewtonRapComp(G, b, nonLinearElem);
+        return myNewtonRapComp(G, b, nonLinearElem, activator.realVector(b.getDimension()), true);
     }
 
 

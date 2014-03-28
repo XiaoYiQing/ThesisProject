@@ -64,6 +64,7 @@ public class TransAnalysis extends Analysis{
         voltageVector.clear();
         TransResults results = new TransResults();
         double currentTime = timeStart;
+        boolean firstIteartion = true;
 
         while(currentTime < timeEnd){
             if (Simulator.Instance.isCancelRequested())
@@ -72,11 +73,12 @@ public class TransAnalysis extends Analysis{
             if (Options.isPrintProgress())
                 System.out.println("Transient solving point");
 
-            IRealVector soln = equation.solve(timeStep, voltageVector, currentTime + timeStep);
+            IRealVector soln = equation.solve(timeStep, voltageVector, currentTime + timeStep, firstIteartion);
 
             results.addVector(currentTime, soln);
             currentTime += timeStep;
             voltageVector.copy(soln);
+            firstIteartion = false;
         }
 
         return results;
